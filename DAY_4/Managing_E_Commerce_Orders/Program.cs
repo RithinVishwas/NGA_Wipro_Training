@@ -27,7 +27,7 @@ class Order
         CustomerId = customerId;
         ProductCategory = category;
         StatusHistory = new Stack<string>();
-        StatusHistory.Push("Created"); // Initial status
+        StatusHistory.Push("Created"); 
     }
 
     public void UpdateStatus(string status)
@@ -52,8 +52,8 @@ class Program
         HashSet<string> categories = new HashSet<string>();
         Queue<Order> orderQueue = new Queue<Order>();
 
-        customers.Add(1, new Customer(1, "Sundar"));
-        customers.Add(2, new Customer(2, "Rahul"));
+        customers.Add(1, new Customer(1, "Rithin"));
+        customers.Add(2, new Customer(2, "Vishwas"));
 
         Order order1 = new Order(101, 1, "Electronics");
         Order order2 = new Order(102, 2, "Clothing");
