@@ -1,0 +1,14 @@
+D:\Visual Studio Projects\Wipro Training\DAY_10\Code Eval\DAY_10_Code_Eval_1\bin\Debug\net10.0\DAY_10_Code_Eval_1.exe
+D:\Visual Studio Projects\Wipro Training\DAY_10\Code Eval\DAY_10_Code_Eval_1\bin\Debug\net10.0\DAY_10_Code_Eval_1.deps.json
+D:\Visual Studio Projects\Wipro Training\DAY_10\Code Eval\DAY_10_Code_Eval_1\bin\Debug\net10.0\DAY_10_Code_Eval_1.runtimeconfig.json
+D:\Visual Studio Projects\Wipro Training\DAY_10\Code Eval\DAY_10_Code_Eval_1\bin\Debug\net10.0\DAY_10_Code_Eval_1.dll
+D:\Visual Studio Projects\Wipro Training\DAY_10\Code Eval\DAY_10_Code_Eval_1\bin\Debug\net10.0\DAY_10_Code_Eval_1.pdb
+D:\Visual Studio Projects\Wipro Training\DAY_10\Code Eval\DAY_10_Code_Eval_1\obj\Debug\net10.0\DAY_10_Code_Eval_1.GeneratedMSBuildEditorConfig.editorconfig
+D:\Visual Studio Projects\Wipro Training\DAY_10\Code Eval\DAY_10_Code_Eval_1\obj\Debug\net10.0\DAY_10_Code_Eval_1.AssemblyInfoInputs.cache
+D:\Visual Studio Projects\Wipro Training\DAY_10\Code Eval\DAY_10_Code_Eval_1\obj\Debug\net10.0\DAY_10_Code_Eval_1.AssemblyInfo.cs
+D:\Visual Studio Projects\Wipro Training\DAY_10\Code Eval\DAY_10_Code_Eval_1\obj\Debug\net10.0\DAY_10_Code_Eval_1.csproj.CoreCompileInputs.cache
+D:\Visual Studio Projects\Wipro Training\DAY_10\Code Eval\DAY_10_Code_Eval_1\obj\Debug\net10.0\DAY_10_Code_Eval_1.dll
+D:\Visual Studio Projects\Wipro Training\DAY_10\Code Eval\DAY_10_Code_Eval_1\obj\Debug\net10.0\refint\DAY_10_Code_Eval_1.dll
+D:\Visual Studio Projects\Wipro Training\DAY_10\Code Eval\DAY_10_Code_Eval_1\obj\Debug\net10.0\DAY_10_Code_Eval_1.pdb
+D:\Visual Studio Projects\Wipro Training\DAY_10\Code Eval\DAY_10_Code_Eval_1\obj\Debug\net10.0\DAY_10_Code_Eval_1.genruntimeconfig.cache
+D:\Visual Studio Projects\Wipro Training\DAY_10\Code Eval\DAY_10_Code_Eval_1\obj\Debug\net10.0\ref\DAY_10_Code_Eval_1.dll
