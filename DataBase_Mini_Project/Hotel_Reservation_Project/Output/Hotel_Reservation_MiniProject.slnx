@@ -1,0 +1,16 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Default" />
+    <Platform Name="Default" />
+  </Configurations>
+  <Folder Name="/SQL/">
+    <File Path="1 - ddl_scripts.sql" />
+    <File Path="2 - dml_scripts.sql" />
+    <File Path="3 - views.sql" />
+    <File Path="4 - indexes.sql" />
+    <File Path="5 - triggers.sql" />
+    <File Path="6 - functions.sql" />
+    <File Path="7 - transactions_dcl.sql" />
+    <File Path="8 - queries.sql" />
+  </Folder>
+</Solution>
