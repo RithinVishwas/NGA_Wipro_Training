@@ -133,4 +133,4 @@ SELECT * FROM dbo.fn_GetCustomerReservationHistory(2);
 
 -----------------------------------------------------------------------------
 
-Capstone Project | P4 – Hotel Reservation System
+                                                  Capstone Project | P4 – Hotel Reservation System
