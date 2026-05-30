@@ -1,0 +1,162 @@
+# Hotel Reservation System — Normalization Report
+
+
+## Sprint 1 | Database Design
+
+----
+
+## 1. Domain Overview
+
+A hotel reservation system manages **hotels**, **rooms**, **customers**, **reservations**, and **payments**. The system must prevent double bookings, track room availability in real time, handle billing, and maintain customer loyalty records.
+
+-------------------------------------------------------------------------------------------
+
+## 2. Entities Identified
+
+| Entity          | Description                                  |
+|-----------------|----------------------------------------------|
+| Hotel           | Physical hotel properties                    |
+| Department      | Hotel departments (Front Desk, Housekeeping) |
+| Staff           | Hotel employees                              |
+| RoomCategory    | Room types (Standard, Deluxe, Suite, etc.)   |
+| Room            | Individual room units in a hotel             |
+| Amenity         | Features available in rooms (WiFi, AC, etc.) |
+| RoomAmenity     | Junction table (Room ↔ Amenity M-M)          |
+| Customer        | Hotel guests                                 |
+| Reservation     | Booking record linking Customer ↔ Room       |
+| Payment         | Financial transactions for reservations      |
+| AuditLog        | System-generated change tracking             |
+
+-------------------------------------------------------------------------------------------
+
+## 3. Relationships
+
+| Relationship                    | Cardinality |
+|---------------------------------|-------------|
+| Hotel → Rooms                   | 1 : M       |
+| Hotel → Departments             | 1 : M       |
+| Hotel → Staff                   | 1 : M       |
+| Department → Staff              | 1 : M       |
+| RoomCategory → Rooms            | 1 : M       |
+| Room ↔ Amenity (via RoomAmenity)| M : M       |
+| Customer → Reservations         | 1 : M       |
+| Room → Reservations             | 1 : M       |
+| Staff → Reservations            | 1 : M       |
+| Reservation → Payments          | 1 : M       |
+
+-------------------------------------------------------------------------------------------
+
+## 4. Normalization Steps
+
+### 4.1 First Normal Form (1NF)
+**Rule:** Each column must hold atomic values; no repeating groups.
+
+**Before 1NF (Unnormalized):**
+```
+Reservation(ResID, CustomerName, CustomerPhone, CustomerEmail,
+            HotelName, RoomNumber, RoomType, Amenities[WiFi, AC, TV],
+            CheckIn, CheckOut, Amount, PaymentMethod)
+```
+
+**Violations:**
+- `Amenities` is a multi-valued column (not atomic).
+- Customer details mixed with reservation details.
+- Payment details inside reservation record.
+
+**After 1NF:** Removed repeating `Amenities` group by creating `Amenity` and `RoomAmenity` tables.  
+All columns now hold single atomic values.
+
+-----------------------------------------------------------------------------------------
+
+### 4.2 Second Normal Form (2NF)
+**Rule:** Must be in 1NF; every non-key attribute must depend on the **entire** primary key (no partial dependencies).
+
+**Partial dependencies found** (in a composite-key pre-2NF design):
+- In a flat `ReservationDetail(ResID, RoomID, RoomType, BasePrice, HotelName, ...)`:  
+  - `RoomType`, `BasePrice` depend only on `RoomID` — **not** on `ResID`.  
+  - `HotelName` depends only on `HotelID` — **not** on `ResID`.
+
+**Resolution:**  
+Separated into:
+- `RoomCategories(CategoryID, CategoryName, BasePrice, MaxOccupancy)`
+- `Rooms(RoomID, HotelID, CategoryID, RoomNumber, ...)`
+- `Hotels(HotelID, HotelName, City, ...)`
+
+Now all non-key attributes in each table depend on the full primary key.
+
+----------------------------------------------------------------------------------------
+
+### 4.3 Third Normal Form (3NF)
+**Rule:** Must be in 2NF; no transitive dependencies (non-key → non-key).
+
+**Transitive dependency found:**
+- In `Customer(CustomerID, LoyaltyPoints, MembershipTier)`:  
+  `MembershipTier` was derived from `LoyaltyPoints`, not directly from `CustomerID`.  
+  This is a transitive dependency: `CustomerID → LoyaltyPoints → MembershipTier`.
+
+**Resolution:**  
+`MembershipTier` is computed by a trigger and function based on `LoyaltyPoints`, but is stored as a denormalized cached value for query performance. The business logic enforces tier consistency via `trg_AfterInsertPayment`. This is an intentional controlled violation for performance — consistent with industry practice.
+
+- In `Staff(StaffID, DepartmentID, DepartmentName)`:  
+  `DepartmentName` depends on `DepartmentID`, not on `StaffID`.
+
+**Resolution:** Created separate `Departments(DepartmentID, DepartmentName, HotelID)` table. `Staff` holds only `DepartmentID` (FK).
+
+---------------------------------------------------------------------------------------
+
+### 4.4 Boyce-Codd Normal Form (BCNF)
+**Rule:** For every non-trivial functional dependency X → Y, X must be a superkey.
+
+**Analysis:**
+- All tables reviewed. No BCNF violations found beyond what was corrected in 3NF.
+- The `RoomAmenities` junction table (composite PK: `RoomID + AmenityID`) correctly handles the M-M relationship without any BCNF violation.
+- `Hotels.Email` is a candidate key (UNIQUE constraint added) — no anomaly.
+
+---------------------------------------------------------------------------------------
+
+## 5. Final Table List (3NF/BCNF Compliant)
+
+| Table            | Primary Key     | Foreign Keys                        |
+|------------------|-----------------|-------------------------------------|
+| Hotels           | HotelID         | —                                   |
+| Departments      | DepartmentID    | HotelID                             |
+| Staff            | StaffID         | HotelID, DepartmentID               |
+| RoomCategories   | CategoryID      | —                                   |
+| Rooms            | RoomID          | HotelID, CategoryID                 |
+| Amenities        | AmenityID       | —                                   |
+| RoomAmenities    | RoomID+AmenityID| RoomID, AmenityID                   |
+| Customers        | CustomerID      | —                                   |
+| Reservations     | ReservationID   | CustomerID, RoomID, StaffID         |
+| Payments         | PaymentID       | ReservationID                       |
+| AuditLog         | LogID           | —                                   |
+
+-----------------------------------------------------------------------------------
+
+## 6. Constraints Applied
+
+| Constraint | Tables Used On                                                     |
+|------------|--------------------------------------------------------------------|
+| PRIMARY KEY| All tables                                                         |
+| FOREIGN KEY| Staff, Rooms, RoomAmenities, Reservations, Payments                |
+| NOT NULL   | All core attribute columns                                         |
+| UNIQUE     | Hotel.Email, Customer.Email, Customer.IDNumber, RoomCategory.Name  |
+| CHECK      | StarRating(1-5), Status enums, Salary≥0, CheckOut>CheckIn          |
+| DEFAULT    | Status, Country, LoyaltyPoints, GETDATE()                          |
+
+-----------------------------------------------------------------------------------
+
+## 7. ER Diagram Summary (text representation)
+
+```
+Hotels ──< Departments ──< Staff
+  |
+  └──< Rooms >── RoomAmenities ──< Amenities
+        |
+        └──< Reservations >──────< Customers
+                  |
+                  └──< Payments
+```
+
+-------------------------------------------------------------------------------------
+
+Capstone Project — P4 Hotel Reservation System
