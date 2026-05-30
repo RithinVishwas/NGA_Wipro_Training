@@ -1,15 +1,10 @@
 # Hotel Reservation System — Normalization Report
 
-
-## Sprint 1 | Database Design
-
-----
-
 ## 1. Domain Overview
 
 A hotel reservation system manages **hotels**, **rooms**, **customers**, **reservations**, and **payments**. The system must prevent double bookings, track room availability in real time, handle billing, and maintain customer loyalty records.
 
--------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## 2. Entities Identified
 
@@ -27,7 +22,7 @@ A hotel reservation system manages **hotels**, **rooms**, **customers**, **reser
 | Payment         | Financial transactions for reservations      |
 | AuditLog        | System-generated change tracking             |
 
--------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## 3. Relationships
 
@@ -44,7 +39,7 @@ A hotel reservation system manages **hotels**, **rooms**, **customers**, **reser
 | Staff → Reservations            | 1 : M       |
 | Reservation → Payments          | 1 : M       |
 
--------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## 4. Normalization Steps
 
@@ -66,7 +61,7 @@ Reservation(ResID, CustomerName, CustomerPhone, CustomerEmail,
 **After 1NF:** Removed repeating `Amenities` group by creating `Amenity` and `RoomAmenity` tables.  
 All columns now hold single atomic values.
 
------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ### 4.2 Second Normal Form (2NF)
 **Rule:** Must be in 1NF; every non-key attribute must depend on the **entire** primary key (no partial dependencies).
@@ -84,7 +79,7 @@ Separated into:
 
 Now all non-key attributes in each table depend on the full primary key.
 
-----------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ### 4.3 Third Normal Form (3NF)
 **Rule:** Must be in 2NF; no transitive dependencies (non-key → non-key).
@@ -102,7 +97,7 @@ Now all non-key attributes in each table depend on the full primary key.
 
 **Resolution:** Created separate `Departments(DepartmentID, DepartmentName, HotelID)` table. `Staff` holds only `DepartmentID` (FK).
 
----------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ### 4.4 Boyce-Codd Normal Form (BCNF)
 **Rule:** For every non-trivial functional dependency X → Y, X must be a superkey.
@@ -112,7 +107,7 @@ Now all non-key attributes in each table depend on the full primary key.
 - The `RoomAmenities` junction table (composite PK: `RoomID + AmenityID`) correctly handles the M-M relationship without any BCNF violation.
 - `Hotels.Email` is a candidate key (UNIQUE constraint added) — no anomaly.
 
----------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## 5. Final Table List (3NF/BCNF Compliant)
 
@@ -130,7 +125,7 @@ Now all non-key attributes in each table depend on the full primary key.
 | Payments         | PaymentID       | ReservationID                       |
 | AuditLog         | LogID           | —                                   |
 
------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## 6. Constraints Applied
 
@@ -143,7 +138,7 @@ Now all non-key attributes in each table depend on the full primary key.
 | CHECK      | StarRating(1-5), Status enums, Salary≥0, CheckOut>CheckIn          |
 | DEFAULT    | Status, Country, LoyaltyPoints, GETDATE()                          |
 
------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## 7. ER Diagram Summary (text representation)
 
@@ -157,6 +152,6 @@ Hotels ──< Departments ──< Staff
                   └──< Payments
 ```
 
--------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Capstone Project — P4 Hotel Reservation System
+                                                            Capstone Project — P4 Hotel Reservation System
