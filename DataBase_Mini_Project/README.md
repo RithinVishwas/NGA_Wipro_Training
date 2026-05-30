@@ -131,6 +131,6 @@ SELECT * FROM dbo.fn_GetCustomerReservationHistory(2);
 | HotelAuditor       | SELECT only on AuditLog, Payments, Reservations  |
 | HotelReports       | SELECT on all Views only                         |
 
----
+-----------------------------------------------------------------------------
 
-*Great Learning Capstone Project | P4 – Hotel Reservation System*
+Capstone Project | P4 – Hotel Reservation System
